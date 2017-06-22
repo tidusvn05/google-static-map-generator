@@ -15,7 +15,7 @@ A tool to generate google static map image for Php, laravel.
 > use Tidusvn05\StaticMap\StaticMap;
 >
 > $sm = new StaticMap();
-> $sm->setKey('AIzaSyAxAoi14Kkehkv2vE2RVHitCTcPC3BarBw')
+> $sm->setKey('Your google map static api key')
 > ->setZoom(10)
   ->setCenter([9.851040, 106.422389]);
 > $sm->generateUrl();
