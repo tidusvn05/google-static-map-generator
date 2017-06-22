@@ -11,6 +11,7 @@ A tool to generate google static map image for Php, laravel.
 
 # Usage
 > require_once __DIR__ . '/../vendor/autoload.php';
+>
 > use Tidusvn05\StaticMap\StaticMap;
 >
 > $sm = new StaticMap();
