@@ -1,0 +1,30 @@
+{
+    "name": "tidusvn05/google-static-map-generator",
+    "description": "PHP Wrapper Lib to use google static map generate image file or url",
+    "keywords": ["google map", "static map", "maps"],
+    "license": "GNU",
+    "authors": [
+        {
+            "name": "Tidusvn05",
+            "email": "tidusvn05@gmail.com"
+        }
+    ],
+    "support" : {
+        "email"  : "support@geotools-php.org",
+        "issues" : "https://github.com/thephpleague/geotools/issues",
+        "source" : "https://github.com/thephpleague/geotools"
+    },
+    "require": {
+        "php": ">=5.4",
+        "emcconville/polyline-encoder" : "1.*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.1.*"
+    },
+    "autoload": {
+        "files": ["src/StaticMap.php"],
+        "psr-4": {
+            "Tidusvn05\\StaticMap\\": "src/"
+        }
+    }
+}
