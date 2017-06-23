@@ -3,12 +3,15 @@
  * @Author: Tidusvn05 
  * @Date: 2017-06-22 15:37:39 
  * @Last Modified by: Tidusvn05
- * @Last Modified time: 2017-06-22 16:40:44
+ * @Last Modified time: 2017-06-23 09:19:28
  */
 
 namespace Tidusvn05\StaticMap\Generators;
 
 class URLGenerator implements GeneratorInterface{
+  // use emcconville\Polyline\GoogleTrait;
+  use \emcconville\Polyline\GoogleTrait;
+  
   const BASE_URL = "https://maps.googleapis.com/maps/api/staticmap?";
   
   private $map;
@@ -17,7 +20,7 @@ class URLGenerator implements GeneratorInterface{
   function __construct($map) {
     $this->map = $map;
   }
-
+  
   public function generate(){
     $parameters_query = $this->build_paramerters();
     $marker_query = $this->build_markers_query();
@@ -43,7 +46,7 @@ class URLGenerator implements GeneratorInterface{
 
     //center
     if (($center = $this->map->getCenter()) !== null) {
-      $this->parameters['center'] = $center[0] . ',' . $center[1];
+      $this->parameters['center'] = $center->getLat() . ',' . $center->getLng();
     }
 
     //maptype
@@ -89,11 +92,11 @@ class URLGenerator implements GeneratorInterface{
   }
 
   private function build_encode_path(){
-    if (($path = $this->map->getPath()) !== null) {
-      //$encoded_str =  Polyline::encode($path);
-      $encoded_str =  "";
+    if (count($path = $this->map->getPath()) > 0) {
+      $path = $this->convert_to_polyline_encoder_path($path);
+      $encoded_str = $this->encodePoints($path);
       $query = "path=fillcolor:". $this->map->getFillColor()."|color:". $this->map->getColor()."|enc:".$encoded_str;
-      return "";
+      return $query;
     }
 
     return "";
@@ -157,7 +160,7 @@ class URLGenerator implements GeneratorInterface{
     //build locations's query
     if(count($marker->getLocations()) > 0){
       foreach($marker->getLocations() as $k => $location){
-        $q = $location[0].",".$location[1];
+        $q = $location->getLat().",".$location->getLng();
         $separator = "|";
         if($query === "")
           $separator = "";
@@ -169,7 +172,24 @@ class URLGenerator implements GeneratorInterface{
   }
 
 
+  /*
 
+    @return list of path array style   [ [41.89084,-87.62386], ...]
+  */
+  private function convert_to_polyline_encoder_path($path){
+    $first = $path[0];
+    if(is_array($first) && count($first) == 2){
+      return $path;
+    }else if(is_object($first) && method_exists($first, 'getLatitude')){
+      $ret_path = [];
+      foreach($path as $p){
+        $ret_path[] = [$p->getLatitude(), $p->getLongitude()];
+      }
+      return $ret_path;
+    }else{
+      throw new \Exception("Input path is wrong");
+    }
+  }
 
 }
 

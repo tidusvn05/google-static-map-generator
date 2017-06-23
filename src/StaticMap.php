@@ -3,7 +3,7 @@
  * @Author: Tidusvn05 
  * @Date: 2017-06-22 15:40:37 
  * @Last Modified by: Tidusvn05
- * @Last Modified time: 2017-06-22 15:42:33
+ * @Last Modified time: 2017-06-22 22:41:51
  */
 
 namespace Tidusvn05\StaticMap;
@@ -56,7 +56,8 @@ class StaticMap{
 	}
 
 	public function setCenter($center){
-		$this->center = $center;
+		$point = new Point($center);
+		$this->center = $point;
 		return $this;
 	}
 

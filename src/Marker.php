@@ -3,7 +3,7 @@
  * @Author: Tidusvn05 
  * @Date: 2017-06-22 15:40:37 
  * @Last Modified by: Tidusvn05
- * @Last Modified time: 2017-06-22 15:41:58
+ * @Last Modified time: 2017-06-22 19:39:32
  */
 
 namespace Tidusvn05\StaticMap;
@@ -29,7 +29,8 @@ class Marker{
 		return $this->locations;
 	}
 
-	public function addLocation($point){
+	public function addLocation($location){
+		$point = new Point($location);
 		$this->locations[] = $point;
 		return $this;
 	}
