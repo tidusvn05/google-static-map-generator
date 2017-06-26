@@ -31,6 +31,7 @@ class StaticMap{
   protected $region;
 	private $color;
 	private $fill_color;
+	private $styleds = [];
 
 
   public function getColor(){
@@ -171,6 +172,37 @@ class StaticMap{
 		$img_generator->generate();
 	}
 
+	public function getStyleds(){
+		return $this->styleds;
+	}
+	
+	public function AddStyled($styled){
+		$this->styleds[] = $styled;
+		
+		return $this;
+	}
+
+	public function AddStyledsfromJson($json_path){
+		try{
+			$json = file_get_contents($json_path);
+			$styles_list = json_decode($json);
+			//var_dump($styles_list);
+			foreach($styles_list as $k => $style){
+				$styled = new Styled();
+				$styled->setFeature($style->featureType);
+				$styled->setElement($style->elementType);
+				$styled->importStylers($style->stylers);
+				
+				$this->styleds[] = $styled;
+			}
+
+		}catch(Exception $e){
+			echo "error parse json file";
+		}
+	
+
+		return $this;
+	}
 
 
 

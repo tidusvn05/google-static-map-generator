@@ -22,12 +22,18 @@ class URLGenerator implements GeneratorInterface{
   }
   
   public function generate(){
+    $styleds_query = $this->build_styleds_query();
     $parameters_query = $this->build_paramerters();
     $marker_query = $this->build_markers_query();
     $path = $this->build_encode_path();
 
 
-    $final_url =  self::BASE_URL.$parameters_query;
+    $final_url =  self::BASE_URL;
+    if($parameters_query !== '')
+      $final_url .= $parameters_query;
+
+    if($styleds_query !== '')
+      $final_url .= $styleds_query;
 
     if($marker_query !== '')
       $final_url .= $marker_query;
@@ -189,6 +195,26 @@ class URLGenerator implements GeneratorInterface{
     }else{
       throw new \Exception("Input path is wrong");
     }
+  }
+
+  /**
+  * build styleds query from styleds array of staticmap
+  */
+  private function build_styleds_query(){
+    $query = "";
+    if (count($styleds = $this->map->getStyleds()) > 0) {
+      foreach($styleds as $k => $styled){
+        $styled_query = $styled->build_query();
+        if($k == 0)
+          $query .= $styled_query;
+        else  
+          $query .= $styled_query;
+      }
+      
+      return $query;
+    }
+
+    return "";
   }
 
 }

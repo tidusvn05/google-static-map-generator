@@ -73,6 +73,12 @@ A tool to generate google static map image for Php, laravel.
 
 	$sm->generateImg("examples/sample.png");
 
+#### 5. With Styled Map
+
+	->AddStyledsfromJson("./examples/styledmap.json")
+
+
+
 # Author
 Tidusvn05 (tidusvn05@gmail.com)
 
