@@ -55,7 +55,7 @@ A tool to generate google static map image for Php, laravel.
 
 
 #### 3. Polygon Shape
-	$path = [
+	$points = [
 	  [34.75966612466248, 134.2529296875],
 	  [32.491230287947594, 134.31884765625],
 	  [32.39851580247402, 138.36181640625],
@@ -63,9 +63,14 @@ A tool to generate google static map image for Php, laravel.
 	  [35.3340712150252, 135.7339782068741],
 	  [34.75966612466248, 134.2529296875],
 	];
-	 $sm->setPath($path)
-	  ->setColor("0xe8dd10")
-	  ->setFillColor("0x1f0fd8")
+	$path = new Path();
+	$path->setBorderColor("0xe8dd10")
+		->setFillColor("0x1f0fd8")
+		->setPath($points);
+	
+	$sm->addPath($path);
+	
+	//can add more path object.
 
 	// https://maps.googleapis.com/maps/api/staticmap?key=AIzaSyCdSA4UthyZnc34U-D3qa99jDZmWncwnYo&size=400x400&language=en&path=fillcolor:0x1f0fd8|color:0xe8dd10|enc:}~csEyglrXv`zL_{KlbQqstW_okOdx}Cezo@xmaJ~doBpg`H
 

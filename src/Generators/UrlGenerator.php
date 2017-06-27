@@ -10,7 +10,7 @@ namespace Tidusvn05\StaticMap\Generators;
 
 class URLGenerator implements GeneratorInterface{
   // use emcconville\Polyline\GoogleTrait;
-  use \emcconville\Polyline\GoogleTrait;
+  
   
   const BASE_URL = "https://maps.googleapis.com/maps/api/staticmap?";
   
@@ -25,7 +25,7 @@ class URLGenerator implements GeneratorInterface{
     $styleds_query = $this->build_styleds_query();
     $parameters_query = $this->build_paramerters();
     $marker_query = $this->build_markers_query();
-    $path = $this->build_encode_path();
+    $paths = $this->build_encoded_paths();
 
 
     $final_url =  self::BASE_URL;
@@ -38,8 +38,8 @@ class URLGenerator implements GeneratorInterface{
     if($marker_query !== '')
       $final_url .= $marker_query;
 
-    if($path !== '')
-      $final_url .= "&".$path;
+    if($paths !== '')
+      $final_url .= $paths;
     
     return $final_url;
   }
@@ -97,21 +97,21 @@ class URLGenerator implements GeneratorInterface{
     return http_build_query($this->parameters, '', '&');
   }
 
-  private function build_encode_path(){
-    if (count($path = $this->map->getPath()) > 0) {
-      $path = $this->convert_to_polyline_encoder_path($path);
-      $encoded_str = $this->encodePoints($path);
-      $query = "path=fillcolor:". $this->map->getFillColor()."|color:". $this->map->getColor()."|enc:".$encoded_str;
-      return $query;
+  private function build_encoded_paths(){
+    $query = "";
+    if(($paths = $this->map->getPaths()) != null){
+      foreach($paths as $path){
+        $query .= "&". $path->build_encoded_query();
+      }
     }
 
-    return "";
+    return $query;
   }
 
   private function build_markers_query(){
     $query = "";
 
-    if (($markers = $this->map->getMarkers()) !== null) {
+    if (($markers = $this->map->getMarkers()) != null) {
       
       foreach($markers as $marker){
         $query .= "&markers=".$this->_build_marker_query($marker);
@@ -175,26 +175,6 @@ class URLGenerator implements GeneratorInterface{
     }
 
     return $query;
-  }
-
-
-  /*
-
-    @return list of path array style   [ [41.89084,-87.62386], ...]
-  */
-  private function convert_to_polyline_encoder_path($path){
-    $first = $path[0];
-    if(is_array($first) && count($first) == 2){
-      return $path;
-    }else if(is_object($first) && method_exists($first, 'getLatitude')){
-      $ret_path = [];
-      foreach($path as $p){
-        $ret_path[] = [$p->getLatitude(), $p->getLongitude()];
-      }
-      return $ret_path;
-    }else{
-      throw new \Exception("Input path is wrong");
-    }
   }
 
   /**

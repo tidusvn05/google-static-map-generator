@@ -24,13 +24,12 @@ class StaticMap{
   protected $scale;
   protected $maptype; //default roadmap
   protected $markers = [];
-  protected $path = [];
+  protected $paths = [];
   protected $language = 'en';
   protected $key;
   protected $format; // default: png
   protected $region;
 	private $color;
-	private $fill_color;
 	private $styleds = [];
 
 
@@ -71,12 +70,19 @@ class StaticMap{
 		return $this;
 	}
 
-	public function getPath(){
-		return $this->path;
+	public function getPaths(){
+		return $this->paths;
 	}
 
-	public function setPath($path){
-		$this->path = $path;
+	public function setPaths($path){
+		$this->paths = $paths;
+		return $this;
+	}
+
+	// @param $path is intance of \Tidusvn05\StaticMap\Path
+	public function addPath($path){
+		$this->paths[] = $path;
+
 		return $this;
 	}
 

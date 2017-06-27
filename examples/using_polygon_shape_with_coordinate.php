@@ -9,6 +9,7 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use Tidusvn05\StaticMap\StaticMap;
+use Tidusvn05\StaticMap\Path;
 use League\Geotools\Coordinate\Coordinate;
 
 
@@ -29,11 +30,15 @@ foreach($path as $p){
   $coordinate_path[] = $coordinate;
 }
 
+$path = new Path();
+$path->setPath($coordinate_path)
+  ->setBorderColor("0xe8dd10")
+  ->setFillColor("0x1f0fd8");
+
 $sm = new StaticMap();
 $url = $sm->setKey('AIzaSyCdSA4UthyZnc34U-D3qa99jDZmWncwnYo')
-  ->setPath($coordinate_path)
-  ->setColor("0xe8dd10")
-  ->setFillColor("0x1f0fd8")
+  ->addPath($path)
+
 //  ->setZoom(8)  // not set mean that is auto fit to zoom.
   ->generateUrl();
 

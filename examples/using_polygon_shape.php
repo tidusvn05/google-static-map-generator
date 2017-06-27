@@ -9,6 +9,7 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use Tidusvn05\StaticMap\StaticMap;
+use Tidusvn05\StaticMap\Path;
 
 //polygon path
 $path = [
@@ -20,11 +21,41 @@ $path = [
   [34.75966612466248, 134.2529296875],
 ];
 
+$arr_path2 = [
+  [35.349892, 139.477623],
+  [35.530610, 138.315545],
+  [34.202905, 137.273204],
+  [35.349892, 139.477623],
+];
+
+$arr_path3 = [
+  [35.082709, 133.518713],
+  [33.075634, 134.155635],
+  [34.895047, 135.673555],
+  [35.082709, 133.518713],
+];
+
 $sm = new StaticMap();
-$url = $sm->setKey('AIzaSyCdSA4UthyZnc34U-D3qa99jDZmWncwnYo')
-  ->setPath($path)
-  ->setColor("0xe8dd10")
-  ->setFillColor("0x1f0fd8")
+$sm->setKey('AIzaSyCdSA4UthyZnc34U-D3qa99jDZmWncwnYo');
+
+$path1 = new Path();
+$path1->setPath($path)
+  ->setBorderColor("#f442e5")
+  ->setFillColor("0x1f0fd8");
+
+$path2 = new Path();
+$path2->setPath($arr_path2)
+  ->setBorderColor("#f442e5")
+  ->setFillColor("#f442e5");
+
+$path3 = new Path();
+$path3->setPath($arr_path3)
+  ->setBorderColor("#f442e5")
+  ->setFillColor("#83f442");
+
+$url =  $sm->AddPath($path1)
+  ->addPath($path2)
+  ->addPath($path3)
 //  ->setZoom(8)  // not set mean that is auto fit to zoom.
   ->generateUrl();
 
