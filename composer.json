@@ -10,9 +10,9 @@
         }
     ],
     "support" : {
-        "email"  : "support@geotools-php.org",
-        "issues" : "https://github.com/thephpleague/geotools/issues",
-        "source" : "https://github.com/thephpleague/geotools"
+        "email"  : "tidusvn05@gmail.com",
+        "issues" : "https://github.com/tidusvn05/google-static-map-generator/issues",
+        "source" : "https://github.com/tidusvn05/google-static-map-generator"
     },
     "require": {
         "php": ">=5.4",
