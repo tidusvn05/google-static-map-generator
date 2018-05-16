@@ -1,7 +1,8 @@
 <?php
+
 /*
- * @Author: Tidusvn05 
- * @Date: 2017-06-22 15:40:37 
+ * @Author: Tidusvn05
+ * @Date: 2017-06-22 15:40:37
  * @Last Modified by: Tidusvn05
  * @Last Modified time: 2017-06-22 19:39:32
  */
@@ -11,19 +12,18 @@ namespace Tidusvn05\StaticMap;
 class Marker{
 	const SIZE = ['tiny', 'mid', 'small'];
 
-  private $size; // default normal size: mid
-  private $color; // 24 bit color: 0xff0011
-  private $label;
-  private $anchor;
-  private $icon;
+  	private $size; // default normal size: mid
+  	private $color; // 24 bit color: 0xff0011
+  	private $label;
+  	private $anchor;
+  	private $icon;
 	private $locations = [];
-  
-  
-  public function setLocations($locations){
+
+	public function setLocations($locations){
 		$this->locations = $locations;
 
 		return $this;
-  }
+  	}
 
 	public function getLocations(){
 		return $this->locations;
@@ -32,6 +32,7 @@ class Marker{
 	public function addLocation($location){
 		$point = new Point($location);
 		$this->locations[] = $point;
+
 		return $this;
 	}
 
@@ -41,6 +42,7 @@ class Marker{
 
 	public function setSize($size){
 		$this->size = $size;
+
 		return $this;
 	}
 
@@ -50,6 +52,7 @@ class Marker{
 
 	public function setColor($color){
 		$this->color = $color;
+
 		return $this;
 	}
 
@@ -59,6 +62,7 @@ class Marker{
 
 	public function setLabel($label){
 		$this->label = $label;
+
 		return $this;
 	}
 
@@ -68,6 +72,7 @@ class Marker{
 
 	public function setAnchor($anchor){
 		$this->anchor = $anchor;
+
 		return $this;
 	}
 
@@ -77,9 +82,7 @@ class Marker{
 
 	public function setIcon($icon){
 		$this->icon = $icon;
+
 		return $this;
 	}
-
-
-
 }

@@ -1,28 +1,35 @@
 <?php
+
 /*
- * @Author: Tidusvn05 
- * @Date: 2017-06-22 15:40:37 
+ * @Author: Tidusvn05
+ * @Date: 2017-06-22 15:40:37
  * @Last Modified by: Tidusvn05
  * @Last Modified time: 2017-06-22 19:39:32
  */
 
 namespace Tidusvn05\StaticMap;
 
-class Styled{
+class Styled
+{
+	private $feature;
+	private $element;
 
-  private $feature;
-  private $element;
-	private $stylers = []; // hash of key-values
-  
-  public function getFeature(){
+	/**
+	 * Hash of key-values.
+	 *
+	 * @var array
+	 */
+	private $stylers = [];
+
+	public function getFeature(){
 		return $this->feature;
 	}
 
-  public function getElement(){
+    public function getElement(){
 		return $this->element;
 	}
 
-  public function getStylers(){
+    public function getStylers(){
 		return $this->stylers;
 	}
 
@@ -35,14 +42,14 @@ class Styled{
 		$this->element = $val;
 		return $this;
 	}
-	
+
 	public function addStyler($key, $val){
 		$this->stylers[$key] = $val;
 
 		return $this;
 	}
 
-	public function importStylers($input_stylers){
+	public function importStylers($input_stylers) {
 		foreach($input_stylers as $key => $styler){
 			$array = get_object_vars($styler);
 			$style_key = array_keys($array)[0];
@@ -56,6 +63,7 @@ class Styled{
 
 	public function build_query(){
 		$query = "&style=feature:" . $this->feature . "|element:" . $this->element;
+
 		foreach($this->stylers as $key => $value){
 			$value = $this->convert_hex_to_hexadecimal($value);
 			$query .= "|" . $key . ":". $value;
@@ -65,13 +73,10 @@ class Styled{
 	}
 
 	private function convert_hex_to_hexadecimal($hex){
-		if(strpos($hex, "#") === 0){
+		if (strpos($hex, "#") === 0) {
 			return str_replace("#", "0x", $hex);
-		}else{
+		} else {
 			return $hex;
 		}
 	}
-
-
-
 }

@@ -1,7 +1,8 @@
 <?php
+
 /*
- * @Author: Tidusvn05 
- * @Date: 2017-06-22 15:40:37 
+ * @Author: Tidusvn05
+ * @Date: 2017-06-22 15:40:37
  * @Last Modified by: Tidusvn05
  * @Last Modified time: 2017-06-22 22:41:51
  */
@@ -11,53 +12,57 @@ use Tidusvn05\StaticMap\Generators\UrlGenerator;
 use Tidusvn05\StaticMap\Generators\ImgGenerator;
 
 
-class StaticMap{
-  const MIN_ZOOM = 1;
-  const MAX_ZOOM = 21;
-  const URL_MAX_LENGTH = 2046;
-  const FORMAT = ['png8', 'png', 'png32', 'jpg', 'gif', 'jpg-baseline'];
-  const MAP_TYPE = ['roadmap', 'satellite', 'hybrid', 'terrain'];
+class StaticMap
+{
+	const MIN_ZOOM = 1;
+  	const MAX_ZOOM = 21;
+  	const URL_MAX_LENGTH = 2046;
+  	const FORMAT = ['png8', 'png', 'png32', 'jpg', 'gif', 'jpg-baseline'];
+  	const MAP_TYPE = ['roadmap', 'satellite', 'hybrid', 'terrain'];
 
-  protected $center;
-  protected $zoom;
-  protected $size = "400x400"; // size of image
-  protected $scale;
-  protected $maptype; //default roadmap
-  protected $markers = [];
-  protected $paths = [];
-  protected $language = 'en';
-  protected $key;
-  protected $format; // default: png
-  protected $region;
+  	protected $center;
+  	protected $zoom;
+  	protected $size = "400x400"; // size of image
+  	protected $scale;
+  	protected $maptype; //default roadmap
+  	protected $markers = [];
+  	protected $paths = [];
+  	protected $language = 'en';
+  	protected $key;
+  	protected $format; // default: png
+	protected $region;
 	private $color;
 	private $styleds = [];
 
 
-  public function getColor(){
+  	public function getColor(){
 		return $this->color;
 	}
 
 	public function setColor($color){
 		$this->color = $color;
+
 		return $this;
 	}
 
-  public function getFillColor(){
+  	public function getFillColor(){
 		return $this->fill_color;
 	}
 
 	public function setFillColor($fill_color){
 		$this->fill_color = $fill_color;
+
 		return $this;
 	}
 
-  public function getCenter(){
+ 	public function getCenter(){
 		return $this->center;
 	}
 
 	public function setCenter($center){
 		$point = new Point($center);
 		$this->center = $point;
+
 		return $this;
 	}
 
@@ -67,6 +72,7 @@ class StaticMap{
 
 	public function setZoom($zoom){
 		$this->zoom = $zoom;
+
 		return $this;
 	}
 
@@ -76,10 +82,13 @@ class StaticMap{
 
 	public function setPaths($path){
 		$this->paths = $paths;
+
 		return $this;
 	}
 
-	// @param $path is intance of \Tidusvn05\StaticMap\Path
+	/**
+	 * @param \Tidusvn05\StaticMap\Path $path
+	 */
 	public function addPath($path){
 		$this->paths[] = $path;
 
@@ -92,6 +101,7 @@ class StaticMap{
 
 	public function setRegion($region){
 		$this->region = $region;
+
 		return $this;
 	}
 
@@ -101,6 +111,7 @@ class StaticMap{
 
 	public function setSize($size){
 		$this->size = $size;
+
 		return $this;
 	}
 
@@ -110,6 +121,7 @@ class StaticMap{
 
 	public function setScale($scale){
 		$this->scale = $scale;
+
 		return $this;
 	}
 
@@ -119,6 +131,7 @@ class StaticMap{
 
 	public function setMaptype($maptype){
 		$this->maptype = $maptype;
+
 		return $this;
 	}
 
@@ -128,14 +141,16 @@ class StaticMap{
 
 	public function setMarkers($markers){
 		$this->markers = $markers;
+
 		return $this;
 	}
 
-  // marker: [lat, lng]
-  public function addMarker($marker){
-    $this->markers[] = $marker;
+  	// marker: [lat, lng]
+  	public function addMarker($marker){
+    	$this->markers[] = $marker;
+
 		return $this;
-  }
+  	}
 
 	public function getLanguage(){
 		return $this->language;
@@ -143,6 +158,7 @@ class StaticMap{
 
 	public function setLanguage($language){
 		$this->language = $language;
+
 		return $this;
 	}
 
@@ -152,6 +168,7 @@ class StaticMap{
 
 	public function setKey($key){
 		$this->key = $key;
+
 		return $this;
 	}
 
@@ -161,13 +178,15 @@ class StaticMap{
 
 	public function setFormat($format){
 		$this->format = $format;
+
 		return $this;
 	}
-  
-  public function generateUrl(){
-    $generator = new UrlGenerator($this);
-    return $generator->generate();
-  }
+
+  	public function generateUrl(){
+    	$generator = new UrlGenerator($this);
+
+		return $generator->generate();
+  	}
 
 	public function generateImg($img_file){
 		$url_generator = new UrlGenerator($this);
@@ -181,10 +200,10 @@ class StaticMap{
 	public function getStyleds(){
 		return $this->styleds;
 	}
-	
+
 	public function AddStyled($styled){
 		$this->styleds[] = $styled;
-		
+
 		return $this;
 	}
 
@@ -198,19 +217,14 @@ class StaticMap{
 				$styled->setFeature($style->featureType);
 				$styled->setElement($style->elementType);
 				$styled->importStylers($style->stylers);
-				
+
 				$this->styleds[] = $styled;
 			}
 
-		}catch(Exception $e){
+		} catch(Exception $e){
 			echo "error parse json file";
 		}
-	
 
 		return $this;
 	}
-
-
-
-
 }
