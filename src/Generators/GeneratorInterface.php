@@ -9,6 +9,7 @@
 
 namespace Tidusvn05\StaticMap\Generators;
 
-interface GeneratorInterface{
+interface GeneratorInterface
+{
     public function generate();
 }
