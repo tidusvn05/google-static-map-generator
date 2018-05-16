@@ -9,7 +9,8 @@
 
 namespace Tidusvn05\StaticMap;
 
-class Marker{
+class Marker
+{
 	const SIZE = ['tiny', 'mid', 'small'];
 
   	private $size; // default normal size: mid
