@@ -79,31 +79,31 @@ class Marker{
 		return $this;
 	}
 
-	public function build_encoded_query($marker) {
+	public function build_encoded_query() {
 		$params = [];
 		$query = "markers=";
 
-		if (($color = $marker->getColor()) !== null) {
+		if (($color = $this->getColor()) !== null) {
 			$params['color'] = $color;
 		}
 
-		if (($size = $marker->getSize()) !== null) {
+		if (($size = $this->getSize()) !== null) {
 			$params['size'] = $size;
 		}
 
-		if (($label = $marker->getLabel()) !== null) {
+		if (($label = $this->getLabel()) !== null) {
 			$params['label'] = $label;
 		}
 
-		if (($icon = $marker->getIcon()) !== null) {
+		if (($icon = $this->getIcon()) !== null) {
 			$params['icon'] = $icon;
 		}
 
-		if (($anchor = $marker->getAnchor()) !== null) {
+		if (($anchor = $this->getAnchor()) !== null) {
 			$params['anchor'] = $anchor;
 		}
 
-		if (($anchor = $marker->getAnchor()) !== null) {
+		if (($anchor = $this->getAnchor()) !== null) {
 			$params['anchor'] = $anchor;
 		}
 
@@ -121,8 +121,8 @@ class Marker{
 		}
 
 		//build locations's query
-		if (count($marker->getLocations()) > 0) {
-			foreach ($marker->getLocations() as $k => $location) {
+		if (count($this->getLocations()) > 0) {
+			foreach ($this->getLocations() as $k => $location) {
 				$q = $location->getLat().",".$location->getLng();
 				$separator = "|";
 				if ($query === "") {
