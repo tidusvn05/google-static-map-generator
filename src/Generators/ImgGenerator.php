@@ -8,33 +8,32 @@
 
 namespace Tidusvn05\StaticMap\Generators;
 
-class ImgGenerator implements GeneratorInterface{
-  private $url;
-  private $destination_file;
+class ImgGenerator implements GeneratorInterface {
 
-  function __construct($url, $destination_file) {
-    $this->url = $url;
-    $this->destination_file = $destination_file;
-  }
+	private $url;
+	private $destination_file;
 
-  function generate(){
-    try{
-      $image = file_get_contents($this->url); 
-      $fp  = fopen($this->destination_file, 'w+'); 
-      
-      $r = fputs($fp, $image); 
-      fclose($fp); 
-      unset($image);
+	function __construct($url, $destination_file) {
+		$this->url = $url;
+		$this->destination_file = $destination_file;
+	}
 
-      return true;
-    }catch(Exception $e){
-      return false;
-    } 
+	function generate() {
+		try {
+			$image = file_get_contents($this->url);
+			$fp = fopen($this->destination_file, 'w+');
 
-  }
+			$r = fputs($fp, $image);
+			fclose($fp);
+			unset($image);
 
+			return true;
+		}
+		catch (Exception $e) {
+			return false;
+		}
+	}
 
 }
-
 
 ?>

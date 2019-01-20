@@ -11,19 +11,18 @@ namespace Tidusvn05\StaticMap;
 class Marker{
 	const SIZE = ['tiny', 'mid', 'small'];
 
-  private $size; // default normal size: mid
-  private $color; // 24 bit color: 0xff0011
-  private $label;
-  private $anchor;
-  private $icon;
+	private $size; // default normal size: mid
+	private $color; // 24 bit color: 0xff0011
+	private $label;
+	private $anchor;
+	private $icon;
 	private $locations = [];
-  
-  
-  public function setLocations($locations){
+
+	public function setLocations($locations) {
 		$this->locations = $locations;
 
 		return $this;
-  }
+	}
 
 	public function getLocations(){
 		return $this->locations;
@@ -79,7 +78,4 @@ class Marker{
 		$this->icon = $icon;
 		return $this;
 	}
-
-
-
 }

@@ -10,166 +10,165 @@ namespace Tidusvn05\StaticMap;
 use Tidusvn05\StaticMap\Generators\UrlGenerator;
 use Tidusvn05\StaticMap\Generators\ImgGenerator;
 
+class StaticMap {
 
-class StaticMap{
-  const MIN_ZOOM = 1;
-  const MAX_ZOOM = 21;
-  const URL_MAX_LENGTH = 2046;
-  const FORMAT = ['png8', 'png', 'png32', 'jpg', 'gif', 'jpg-baseline'];
-  const MAP_TYPE = ['roadmap', 'satellite', 'hybrid', 'terrain'];
+	const MIN_ZOOM = 1;
+	const MAX_ZOOM = 21;
+	const URL_MAX_LENGTH = 2046;
+	const FORMAT = ['png8', 'png', 'png32', 'jpg', 'gif', 'jpg-baseline'];
+	const MAP_TYPE = ['roadmap', 'satellite', 'hybrid', 'terrain'];
 
-  protected $center;
-  protected $zoom;
-  protected $size = "400x400"; // size of image
-  protected $scale;
-  protected $maptype; //default roadmap
-  protected $markers = [];
-  protected $paths = [];
-  protected $language = 'en';
-  protected $key;
-  protected $format; // default: png
-  protected $region;
+	protected $center;
+	protected $zoom;
+	protected $size = "400x400"; // size of image
+	protected $scale;
+	protected $maptype; //default roadmap
+	protected $markers = [];
+	protected $paths = [];
+	protected $language = 'en';
+	protected $key;
+	protected $format; // default: png
+	protected $region;
 	private $color;
 	private $styleds = [];
 
-
-  public function getColor(){
+	public function getColor() {
 		return $this->color;
 	}
 
-	public function setColor($color){
+	public function setColor($color) {
 		$this->color = $color;
 		return $this;
 	}
 
-  public function getFillColor(){
+	public function getFillColor() {
 		return $this->fill_color;
 	}
 
-	public function setFillColor($fill_color){
+	public function setFillColor($fill_color) {
 		$this->fill_color = $fill_color;
 		return $this;
 	}
 
-  public function getCenter(){
+	public function getCenter() {
 		return $this->center;
 	}
 
-	public function setCenter($center){
+	public function setCenter($center) {
 		$point = new Point($center);
 		$this->center = $point;
 		return $this;
 	}
 
-	public function getZoom(){
+	public function getZoom() {
 		return $this->zoom;
 	}
 
-	public function setZoom($zoom){
+	public function setZoom($zoom) {
 		$this->zoom = $zoom;
 		return $this;
 	}
 
-	public function getPaths(){
+	public function getPaths() {
 		return $this->paths;
 	}
 
-	public function setPaths($path){
+	public function setPaths($path) {
 		$this->paths = $paths;
 		return $this;
 	}
 
 	// @param $path is intance of \Tidusvn05\StaticMap\Path
-	public function addPath($path){
+	public function addPath($path) {
 		$this->paths[] = $path;
 
 		return $this;
 	}
 
-	public function getregion(){
+	public function getregion() {
 		return $this->region;
 	}
 
-	public function setRegion($region){
+	public function setRegion($region) {
 		$this->region = $region;
 		return $this;
 	}
 
-	public function getSize(){
+	public function getSize() {
 		return $this->size;
 	}
 
-	public function setSize($size){
+	public function setSize($size) {
 		$this->size = $size;
 		return $this;
 	}
 
-	public function getScale(){
+	public function getScale() {
 		return $this->scale;
 	}
 
-	public function setScale($scale){
+	public function setScale($scale) {
 		$this->scale = $scale;
 		return $this;
 	}
 
-	public function getMaptype(){
+	public function getMaptype() {
 		return $this->maptype;
 	}
 
-	public function setMaptype($maptype){
+	public function setMaptype($maptype) {
 		$this->maptype = $maptype;
 		return $this;
 	}
 
-	public function getMarkers(){
+	public function getMarkers() {
 		return $this->markers;
 	}
 
-	public function setMarkers($markers){
+	public function setMarkers($markers) {
 		$this->markers = $markers;
 		return $this;
 	}
 
-  // marker: [lat, lng]
-  public function addMarker($marker){
-    $this->markers[] = $marker;
+	// marker: [lat, lng]
+	public function addMarker($marker) {
+		$this->markers[] = $marker;
 		return $this;
-  }
+	}
 
-	public function getLanguage(){
+	public function getLanguage() {
 		return $this->language;
 	}
 
-	public function setLanguage($language){
+	public function setLanguage($language) {
 		$this->language = $language;
 		return $this;
 	}
 
-	public function getKey(){
+	public function getKey() {
 		return $this->key;
 	}
 
-	public function setKey($key){
+	public function setKey($key) {
 		$this->key = $key;
 		return $this;
 	}
 
-	public function getFormat(){
+	public function getFormat() {
 		return $this->format;
 	}
 
-	public function setFormat($format){
+	public function setFormat($format) {
 		$this->format = $format;
 		return $this;
 	}
-  
-  public function generateUrl(){
-    $generator = new UrlGenerator($this);
-    return $generator->generate();
-  }
 
-	public function generateImg($img_file){
+	public function generateUrl() {
+		$generator = new UrlGenerator($this);
+		return $generator->generate();
+	}
+
+	public function generateImg($img_file) {
 		$url_generator = new UrlGenerator($this);
 		$url = $url_generator->generate();
 
@@ -178,39 +177,35 @@ class StaticMap{
 		$img_generator->generate();
 	}
 
-	public function getStyleds(){
+	public function getStyleds() {
 		return $this->styleds;
 	}
-	
-	public function AddStyled($styled){
+
+	public function AddStyled($styled) {
 		$this->styleds[] = $styled;
-		
+
 		return $this;
 	}
 
-	public function AddStyledsfromJson($json_path){
-		try{
+	public function AddStyledsfromJson($json_path) {
+		try {
 			$json = file_get_contents($json_path);
 			$styles_list = json_decode($json);
 			//var_dump($styles_list);
-			foreach($styles_list as $k => $style){
+			foreach ($styles_list as $k => $style) {
 				$styled = new Styled();
 				$styled->setFeature($style->featureType);
 				$styled->setElement($style->elementType);
 				$styled->importStylers($style->stylers);
-				
+
 				$this->styleds[] = $styled;
 			}
-
-		}catch(Exception $e){
+		}
+		catch (Exception $e) {
 			echo "error parse json file";
 		}
-	
 
 		return $this;
 	}
-
-
-
 
 }

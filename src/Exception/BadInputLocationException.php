@@ -7,13 +7,12 @@
  */
 namespace Tidusvn05\StaticMap\Exception;
 
-class BadInputLocationException extends \Exception{
-  protected $message = 'Bad Input Location exception';
+class BadInputLocationException extends \Exception {
 
-  public function __toString()
-  {
-    return get_class($this) . " '{$this->message}' in {$this->file}({$this->line})\n"
-                            . "{$this->getTraceAsString()}";
-  }
-  
+	protected $message = 'Bad Input Location exception';
+
+	public function __toString() {
+		return get_class($this)." '{$this->message}' in {$this->file}({$this->line})\n"."{$this->getTraceAsString()}";
+	}
+
 }

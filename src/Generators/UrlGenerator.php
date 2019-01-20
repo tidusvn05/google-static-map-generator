@@ -8,194 +8,199 @@
 
 namespace Tidusvn05\StaticMap\Generators;
 
-class URLGenerator implements GeneratorInterface{
-  // use emcconville\Polyline\GoogleTrait;
-  
-  
-  const BASE_URL = "https://maps.googleapis.com/maps/api/staticmap?";
-  
-  private $map;
-  private $parameters = [];
+class URLGenerator implements GeneratorInterface {
 
-  function __construct($map) {
-    $this->map = $map;
-  }
-  
-  public function generate(){
-    $styleds_query = $this->build_styleds_query();
-    $parameters_query = $this->build_paramerters();
-    $marker_query = $this->build_markers_query();
-    $paths = $this->build_encoded_paths();
+	// use emcconville\Polyline\GoogleTrait;
 
+	const BASE_URL = "https://maps.googleapis.com/maps/api/staticmap?";
 
-    $final_url =  self::BASE_URL;
-    if($parameters_query !== '')
-      $final_url .= $parameters_query;
+	private $map;
+	private $parameters = [];
 
-    if($styleds_query !== '')
-      $final_url .= $styleds_query;
+	function __construct($map) {
+		$this->map = $map;
+	}
 
-    if($marker_query !== '')
-      $final_url .= $marker_query;
+	public function generate() {
+		$styleds_query = $this->build_styleds_query();
+		$parameters_query = $this->build_paramerters();
+		$marker_query = $this->build_markers_query();
+		$paths = $this->build_encoded_paths();
 
-    if($paths !== '')
-      $final_url .= $paths;
-    
-    return $final_url;
-  }
+		$final_url = self::BASE_URL;
+		if ($parameters_query !== '') {
+			$final_url .= $parameters_query;
+		}
 
-  private function init_parameters(){
-    //key
-    if (($key = $this->map->getKey()) !== null) {
-      $this->parameters['key'] = $key;
-    }
+		if ($styleds_query !== '') {
+			$final_url .= $styleds_query;
+		}
 
-    //center
-    if (($center = $this->map->getCenter()) !== null) {
-      $this->parameters['center'] = $center->getLat() . ',' . $center->getLng();
-    }
+		if ($marker_query !== '') {
+			$final_url .= $marker_query;
+		}
 
-    //maptype
-    if (($maptype = $this->map->getMaptype()) !== null) {
-      $this->parameters['maptype'] = $this->maptype;
-    }
+		if ($paths !== '') {
+			$final_url .= $paths;
+		}
 
-    //maptype
-    if (($zoom = $this->map->getZoom()) !== null) {
-      $this->parameters['zoom'] = $zoom;
-    }
+		return $final_url;
+	}
 
-    //size
-    if (($size = $this->map->getSize()) !== null) {
-      $this->parameters['size'] = $size;
-    }
+	private function init_parameters() {
+		//key
+		if (($key = $this->map->getKey()) !== null) {
+			$this->parameters['key'] = $key;
+		}
 
-    //scale
-    if (($scale = $this->map->getScale()) !== null) {
-      $this->parameters['scale'] = $scale;
-    }
+		//center
+		if (($center = $this->map->getCenter()) !== null) {
+			$this->parameters['center'] = $center->getLat().','.$center->getLng();
+		}
 
-    //language
-    if (($language = $this->map->getLanguage()) !== null) {
-      $this->parameters['language'] = $language;
-    }
+		//maptype
+		if (($maptype = $this->map->getMaptype()) !== null) {
+			$this->parameters['maptype'] = $this->maptype;
+		}
 
-    //format
-    if (($format = $this->map->getFormat()) !== null) {
-      $this->parameters['format'] = $format;
-    }
+		//maptype
+		if (($zoom = $this->map->getZoom()) !== null) {
+			$this->parameters['zoom'] = $zoom;
+		}
 
-    //region
-    if (($region = $this->map->getRegion()) !== null) {
-      $this->parameters['region'] = $region;
-    }
+		//size
+		if (($size = $this->map->getSize()) !== null) {
+			$this->parameters['size'] = $size;
+		}
 
-  }
+		//scale
+		if (($scale = $this->map->getScale()) !== null) {
+			$this->parameters['scale'] = $scale;
+		}
 
-  private function build_paramerters(){
-    $this->init_parameters();
-    return http_build_query($this->parameters, '', '&');
-  }
+		//language
+		if (($language = $this->map->getLanguage()) !== null) {
+			$this->parameters['language'] = $language;
+		}
 
-  private function build_encoded_paths(){
-    $query = "";
-    if(($paths = $this->map->getPaths()) != null){
-      foreach($paths as $path){
-        $query .= "&". $path->build_encoded_query();
-      }
-    }
+		//format
+		if (($format = $this->map->getFormat()) !== null) {
+			$this->parameters['format'] = $format;
+		}
 
-    return $query;
-  }
+		//region
+		if (($region = $this->map->getRegion()) !== null) {
+			$this->parameters['region'] = $region;
+		}
+	}
 
-  private function build_markers_query(){
-    $query = "";
+	private function build_paramerters() {
+		$this->init_parameters();
+		return http_build_query($this->parameters, '', '&');
+	}
 
-    if (($markers = $this->map->getMarkers()) != null) {
-      
-      foreach($markers as $marker){
-        $query .= "&markers=".$this->_build_marker_query($marker);
-      }
+	private function build_encoded_paths() {
+		$query = "";
+		if (($paths = $this->map->getPaths()) != null) {
+			foreach ($paths as $path) {
+				$query .= "&".$path->build_encoded_query();
+			}
+		}
 
-      return $query;
-    }
+		return $query;
+	}
 
-    return "";
-  }
+	private function build_markers_query() {
+		$query = "";
 
-  private function _build_marker_query($marker){
-    $params = []; 
-    $query = "";
+		if (($markers = $this->map->getMarkers()) != null) {
 
-    if (($color = $marker->getColor()) !== null) {
-      $params['color'] = $color;
-    }
+			foreach ($markers as $marker) {
+				$query .= "&markers=".$this->_build_marker_query($marker);
+			}
 
-    if (($size = $marker->getSize()) !== null) {
-      $params['size'] = $size;
-    }
+			return $query;
+		}
 
-    if (($label = $marker->getLabel()) !== null) {
-      $params['label'] = $label;
-    }
+		return "";
+	}
 
-    if (($icon = $marker->getIcon()) !== null) {
-      $params['icon'] = $icon;
-    }
+	private function _build_marker_query($marker) {
+		$params = [];
+		$query = "";
 
-    if (($anchor = $marker->getAnchor()) !== null) {
-      $params['anchor'] = $anchor;
-    }
+		if (($color = $marker->getColor()) !== null) {
+			$params['color'] = $color;
+		}
 
-    if (($anchor = $marker->getAnchor()) !== null) {
-      $params['anchor'] = $anchor;
-    }
+		if (($size = $marker->getSize()) !== null) {
+			$params['size'] = $size;
+		}
 
-    //build query
-    $i = 0;
-    foreach($params as $k => $val){
-      $q = "$k:$val";
-      $separator = "|";
-      if($i === 0)
-        $separator = "";
-      
-      $query .= $separator.$q;
-      $i++;
-    }
+		if (($label = $marker->getLabel()) !== null) {
+			$params['label'] = $label;
+		}
 
-    //build locations's query
-    if(count($marker->getLocations()) > 0){
-      foreach($marker->getLocations() as $k => $location){
-        $q = $location->getLat().",".$location->getLng();
-        $separator = "|";
-        if($query === "")
-          $separator = "";
-        $query .= $separator.$q;
-      }
-    }
+		if (($icon = $marker->getIcon()) !== null) {
+			$params['icon'] = $icon;
+		}
 
-    return $query;
-  }
+		if (($anchor = $marker->getAnchor()) !== null) {
+			$params['anchor'] = $anchor;
+		}
 
-  /**
-  * build styleds query from styleds array of staticmap
-  */
-  private function build_styleds_query(){
-    $query = "";
-    if (count($styleds = $this->map->getStyleds()) > 0) {
-      foreach($styleds as $k => $styled){
-        $styled_query = $styled->build_query();
-        if($k == 0)
-          $query .= $styled_query;
-        else  
-          $query .= $styled_query;
-      }
-      
-      return $query;
-    }
+		if (($anchor = $marker->getAnchor()) !== null) {
+			$params['anchor'] = $anchor;
+		}
 
-    return "";
-  }
+		//build query
+		$i = 0;
+		foreach ($params as $k => $val) {
+			$q = "$k:$val";
+			$separator = "|";
+			if ($i === 0) {
+				$separator = "";
+			}
+
+			$query .= $separator.$q;
+			$i++;
+		}
+
+		//build locations's query
+		if (count($marker->getLocations()) > 0) {
+			foreach ($marker->getLocations() as $k => $location) {
+				$q = $location->getLat().",".$location->getLng();
+				$separator = "|";
+				if ($query === "") {
+					$separator = "";
+				}
+				$query .= $separator.$q;
+			}
+		}
+
+		return $query;
+	}
+
+	/**
+	 * build styleds query from styleds array of staticmap
+	 */
+	private function build_styleds_query() {
+		$query = "";
+		if (count($styleds = $this->map->getStyleds()) > 0) {
+			foreach ($styleds as $k => $styled) {
+				$styled_query = $styled->build_query();
+				if ($k == 0) {
+					$query .= $styled_query;
+				} else {
+					$query .= $styled_query;
+				}
+			}
+
+			return $query;
+		}
+
+		return "";
+	}
 
 }
 
