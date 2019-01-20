@@ -7,8 +7,6 @@
  */
 
 namespace Tidusvn05\StaticMap;
-use Tidusvn05\StaticMap\Generators\UrlGenerator;
-use Tidusvn05\StaticMap\Generators\ImgGenerator;
 
 class StaticMap {
 
@@ -17,18 +15,23 @@ class StaticMap {
 	const URL_MAX_LENGTH = 2046;
 	const FORMAT = ['png8', 'png', 'png32', 'jpg', 'gif', 'jpg-baseline'];
 	const MAP_TYPE = ['roadmap', 'satellite', 'hybrid', 'terrain'];
+	const DOMAIN = 'https://maps.googleapis.com';
+	const BASE_URL = '/maps/api/staticmap?';
 
 	protected $center;
 	protected $zoom;
-	protected $size = "400x400"; // size of image
+	protected $size = '400x400'; // size of image
 	protected $scale;
 	protected $maptype; //default roadmap
 	protected $markers = [];
 	protected $paths = [];
 	protected $language = 'en';
 	protected $key;
+	protected $urlSigningSecret;
 	protected $format; // default: png
 	protected $region;
+	protected $fill_color;
+
 	private $color;
 	private $styleds = [];
 
@@ -73,7 +76,7 @@ class StaticMap {
 		return $this->paths;
 	}
 
-	public function setPaths($path) {
+	public function setPaths($paths) {
 		$this->paths = $paths;
 		return $this;
 	}
@@ -164,17 +167,101 @@ class StaticMap {
 	}
 
 	public function generateUrl() {
-		$generator = new UrlGenerator($this);
-		return $generator->generate();
+		$url = self::BASE_URL;
+
+		$params = [];
+		//key
+		if (($key = $this->getKey()) !== null) {
+			$params['key'] = $key;
+		}
+
+		//center
+		if (($center = $this->getCenter()) !== null) {
+			$params['center'] = $center->getLat().','.$center->getLng();
+		}
+
+		//maptype
+		if (($maptype = $this->getMaptype()) !== null) {
+			$params['maptype'] = $maptype;
+		}
+
+		//maptype
+		if (($zoom = $this->getZoom()) !== null) {
+			$params['zoom'] = $zoom;
+		}
+
+		//size
+		if (($size = $this->getSize()) !== null) {
+			$params['size'] = $size;
+		}
+
+		//scale
+		if (($scale = $this->getScale()) !== null) {
+			$params['scale'] = $scale;
+		}
+
+		//language
+		if (($language = $this->getLanguage()) !== null) {
+			$params['language'] = $language;
+		}
+
+		//format
+		if (($format = $this->getFormat()) !== null) {
+			$params['format'] = $format;
+		}
+
+		//region
+		if (($region = $this->getRegion()) !== null) {
+			$params['region'] = $region;
+		}
+
+		if ($styleds = $this->getStyleds()) {
+			foreach ($styleds as $k => $styled) {
+				$url .= '&'.$styled->build_encoded_query();
+			}
+		}
+
+		if ($markers = $this->getMarkers()) {
+			foreach ($markers as $marker) {
+				$url .= '&'.$marker->build_encoded_query();
+			}
+		}
+
+		if ($paths = $this->getPaths()) {
+			foreach ($paths as $path) {
+				$url .= '&'.$path->build_encoded_query();
+			}
+		}
+
+		//https://gist.github.com/MattKetmo/6897944
+		if ($this->urlSigningSecret) {
+			$decodedKey = base64_decode(str_replace(['-', '_'], ['+', '/'], $this->urlSigningSecret));
+			// Create a signature using the private key and the URL-encoded
+			// string using HMAC SHA1. This signature will be binary.
+			$signature = hash_hmac('sha1', $this->urlSigningSecret, $decodedKey, true);
+			$encodedSignature = str_replace(['+', '/'], ['-', '_'], base64_encode($signature));
+			$url .= '&signature='.$encodedSignature;
+		}
+
+		return self::DOMAIN.$url;
 	}
 
 	public function generateImg($img_file) {
-		$url_generator = new UrlGenerator($this);
-		$url = $url_generator->generate();
+		$url = $this->generateUrl();
 
-		//generate img from static url
-		$img_generator = new ImgGenerator($url, $img_file);
-		$img_generator->generate();
+		try {
+			$image = file_get_contents($url);
+
+			$fp = fopen($img_file, 'w+');
+			fputs($fp, $image);
+			fclose($fp);
+			unset($image);
+
+			return true;
+		}
+		catch (\Exception $e) {
+			return false;
+		}
 	}
 
 	public function getStyleds() {
@@ -201,11 +288,25 @@ class StaticMap {
 				$this->styleds[] = $styled;
 			}
 		}
-		catch (Exception $e) {
-			echo "error parse json file";
+		catch (\Exception $e) {
+			throw new Exception\BadInputException('Error parsing json file');
 		}
 
 		return $this;
 	}
 
+	/**
+	 * @return string
+	 */
+	public function getUrlSigningSecret() {
+		return $this->urlSigningSecret;
+	}
+
+	/**
+	 * @param string $urlSigningSecret
+	 */
+	public function setUrlSigningSecret($urlSigningSecret) {
+		$this->urlSigningSecret = $urlSigningSecret;
+		return $this;
+	}
 }

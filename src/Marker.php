@@ -78,4 +78,61 @@ class Marker{
 		$this->icon = $icon;
 		return $this;
 	}
+
+	public function build_encoded_query($marker) {
+		$params = [];
+		$query = "markers=";
+
+		if (($color = $marker->getColor()) !== null) {
+			$params['color'] = $color;
+		}
+
+		if (($size = $marker->getSize()) !== null) {
+			$params['size'] = $size;
+		}
+
+		if (($label = $marker->getLabel()) !== null) {
+			$params['label'] = $label;
+		}
+
+		if (($icon = $marker->getIcon()) !== null) {
+			$params['icon'] = $icon;
+		}
+
+		if (($anchor = $marker->getAnchor()) !== null) {
+			$params['anchor'] = $anchor;
+		}
+
+		if (($anchor = $marker->getAnchor()) !== null) {
+			$params['anchor'] = $anchor;
+		}
+
+		//build query
+		$i = 0;
+		foreach ($params as $k => $val) {
+			$q = "$k:$val";
+			$separator = "|";
+			if ($i === 0) {
+				$separator = "";
+			}
+
+			$query .= $separator.$q;
+			$i++;
+		}
+
+		//build locations's query
+		if (count($marker->getLocations()) > 0) {
+			foreach ($marker->getLocations() as $k => $location) {
+				$q = $location->getLat().",".$location->getLng();
+				$separator = "|";
+				if ($query === "") {
+					$separator = "";
+				}
+				$query .= $separator.$q;
+			}
+		}
+
+		return $query;
+	}
+
 }

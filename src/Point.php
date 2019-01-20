@@ -7,7 +7,6 @@
  */
 
 namespace Tidusvn05\StaticMap;
-use Tidusvn05\StaticMap\Exception\BadInputLocationException;
 
 class Point {
 
@@ -18,10 +17,11 @@ class Point {
 		$this->parse($input);
 	}
 
-	/*
-	*  Parse input obj to StaticMap obj coordinate
-	*  @param $obj is array[lat, lng] or Google coordinate obj
-	*  @return obj with lat & lng
+	/**
+	 * Parse input obj to StaticMap obj coordinate
+	 * @param []|stdClass $obj is array[lat, lng] or Google coordinate obj
+	 * @return Point obj with lat & lng
+	 * @throws Exception\BadInputException
 	*/
 	function parse($input) {
 		if (is_array($input)) {
@@ -32,7 +32,7 @@ class Point {
 				$this->parse_as_obj($input);
 			} else {
 				//not support
-				throw new BadInputLocationException();
+				throw new Exception\BadInputException();
 			}
 		}
 

@@ -54,19 +54,19 @@ class Styled {
 		return $this;
 	}
 
-	public function build_query() {
-		$query = "&style=feature:".$this->feature."|element:".$this->element;
+	public function build_encoded_query() {
+		$query = 'style=feature:'.$this->feature.'|element:'.$this->element;
 		foreach ($this->stylers as $key => $value) {
 			$value = $this->convert_hex_to_hexadecimal($value);
-			$query .= "|".$key.":".$value;
+			$query .= '|'.$key.':'.$value;
 		}
 
 		return $query;
 	}
 
 	private function convert_hex_to_hexadecimal($hex) {
-		if (strpos($hex, "#") === 0) {
-			return str_replace("#", "0x", $hex);
+		if (strpos($hex, '#') === 0) {
+			return str_replace('#', '0x', $hex);
 		} else {
 			return $hex;
 		}

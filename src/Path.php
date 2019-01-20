@@ -25,7 +25,7 @@ class Path {
 			if (strpos($color, "0x") === 0) {
 				$this->fill_color = $color;
 			} else {
-				throw new \Exception("Only allow hex or hexadecimal color style.");
+				throw new Exception\BadInputException("Only allow hex or hexadecimal color style.");
 			}
 		}
 
@@ -40,13 +40,18 @@ class Path {
 			if (strpos($color, "0x") === 0) {
 				$this->border_color = $color;
 			} else {
-				throw new \Exception("Only allow hex or hexadecimal color style.");
+				throw new Exception\BadInputException(("Only allow hex or hexadecimal color style.");
 			}
 		}
 
 		return $this;
 	}
 
+	/**
+	 * @param $path
+	 * @return $this
+	 * @throws Exception\BadInputException
+	 */
 	public function setPath($path) {
 		if (is_array($path)) {
 			$path = $this->convert_to_polyline_encoder_path($path);
@@ -67,10 +72,11 @@ class Path {
 		return $query;
 	}
 
-	/*
-
-	  @return list of path array style   [ [41.89084,-87.62386], ...]
-	*/
+	/**
+	 * @param $path
+	 * @return array list of path array style   [ [41.89084,-87.62386], ...]
+	 * @throws Exception\BadInputException
+	 */
 	private function convert_to_polyline_encoder_path($path) {
 		$first = $path[0];
 		if (is_array($first) && count($first) == 2) {
@@ -83,7 +89,7 @@ class Path {
 				}
 				return $ret_path;
 			} else {
-				throw new \Exception("Input path is wrong");
+				throw new Exception\BadInputException('Path array is not valid lat/lon set, or object with getLatitude/getLongitude functions.');
 			}
 		}
 	}

@@ -7,7 +7,7 @@
  */
 namespace Tidusvn05\StaticMap\Exception;
 
-class BadInputLocationException extends \Exception {
+class BadInputException extends \Exception {
 
 	protected $message = 'Bad Input Location exception';
 
