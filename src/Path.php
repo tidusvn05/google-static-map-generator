@@ -42,7 +42,9 @@ class Path {
 	}
 
 	public function setPath($path){
-		$path = $this->convert_to_polyline_encoder_path($path);
+		if (is_array($path)) {
+			$path = $this->convert_to_polyline_encoder_path($path);
+		}
 		$this->path = $path;
 		return $this;
 	}
