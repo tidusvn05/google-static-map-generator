@@ -19,13 +19,13 @@ class Path {
 
 	// convert to hexdecimal color
 	public function setFillColor($color) {
-		if (strpos($color, "#") === 0) {
-			$this->fill_color = str_replace("#", "0x", $color);
+		if (strpos($color, '#') === 0) {
+			$this->fill_color = str_replace('#', '0x', $color);
 		} else {
-			if (strpos($color, "0x") === 0) {
+			if (strpos($color, '0x') === 0) {
 				$this->fill_color = $color;
 			} else {
-				throw new Exception\BadInputException("Only allow hex or hexadecimal color style.");
+				throw new Exception\BadInputException('Only allow hex or hexadecimal color style.');
 			}
 		}
 
@@ -34,13 +34,13 @@ class Path {
 
 	// convert to hexdecimal color
 	public function setBorderColor($color) {
-		if (strpos($color, "#") === 0) {
-			$this->border_color = str_replace("#", "0x", $color);
+		if (strpos($color, '#') === 0) {
+			$this->border_color = str_replace('#', '0x', $color);
 		} else {
-			if (strpos($color, "0x") === 0) {
+			if (strpos($color, '0x') === 0) {
 				$this->border_color = $color;
 			} else {
-				throw new Exception\BadInputException(("Only allow hex or hexadecimal color style.");
+				throw new Exception\BadInputException('Only allow hex or hexadecimal color style.');
 			}
 		}
 
@@ -68,7 +68,7 @@ class Path {
 		} elseif ($this->pathString) {
 			$encoded_str = $this->pathString;
 		}
-		$query = "path=fillcolor:".$this->fill_color."|color:".$this->border_color."|enc:".$encoded_str;
+		$query = 'path=fillcolor:'.$this->fill_color.'|color:'.$this->border_color.'|enc:'.$encoded_str;
 		return $query;
 	}
 
