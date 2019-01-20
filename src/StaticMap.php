@@ -238,7 +238,7 @@ class StaticMap {
 			$decodedKey = base64_decode(str_replace(['-', '_'], ['+', '/'], $this->urlSigningSecret));
 			// Create a signature using the private key and the URL-encoded
 			// string using HMAC SHA1. This signature will be binary.
-			$signature = hash_hmac('sha1', $this->urlSigningSecret, $decodedKey, true);
+			$signature = hash_hmac('sha1', $url, $decodedKey, true);
 			$encodedSignature = str_replace(['+', '/'], ['-', '_'], base64_encode($signature));
 			$url .= '&signature='.$encodedSignature;
 		}
