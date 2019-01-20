@@ -214,6 +214,7 @@ class StaticMap {
 		if (($region = $this->getRegion()) !== null) {
 			$params['region'] = $region;
 		}
+		$url .= http_build_query($params);
 
 		if ($styleds = $this->getStyleds()) {
 			foreach ($styleds as $k => $styled) {
