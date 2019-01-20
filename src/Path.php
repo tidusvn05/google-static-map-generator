@@ -14,6 +14,7 @@ class Path {
   private $border_color; // 24 bit color: 0xff0011
   private $fill_color;
 	private $path = [];
+	private $pathString = '';
   
 	// convert to hexdecimal color
 	public function setFillColor($color){
@@ -44,21 +45,23 @@ class Path {
 	public function setPath($path){
 		if (is_array($path)) {
 			$path = $this->convert_to_polyline_encoder_path($path);
+			$this->path = $path;
+		} else {
+			$this->pathString = $path;
 		}
-		$this->path = $path;
 		return $this;
 	}
 
 
 	public function build_encoded_query(){
-    if (count($this->path) > 0) {
-      $encoded_str = $this->encodePoints($this->path);
-      $query = "path=fillcolor:". $this->fill_color."|color:". $this->border_color."|enc:".$encoded_str;
-      return $query;
-    }
-
-    return "";
-  }
+		if (count($this->path) > 0) {
+			$encoded_str = $this->encodePoints($this->path);
+		} elseif ($this->pathString) {
+			$encoded_str = $this->pathString;
+		}
+		$query = "path=fillcolor:". $this->fill_color."|color:". $this->border_color."|enc:".$encoded_str;
+		return $query;
+  	}
 
   /*
 
