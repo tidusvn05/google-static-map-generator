@@ -81,7 +81,7 @@ class Marker{
 
 	public function build_encoded_query() {
 		$params = [];
-		$query = "markers=";
+		$query = '';
 
 		if (($color = $this->getColor()) !== null) {
 			$params['color'] = $color;
@@ -132,7 +132,7 @@ class Marker{
 			}
 		}
 
-		return $query;
+		return 'markers='.urlencode($query);
 	}
 
 }

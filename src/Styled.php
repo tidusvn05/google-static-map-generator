@@ -55,13 +55,13 @@ class Styled {
 	}
 
 	public function build_encoded_query() {
-		$query = 'style=feature:'.$this->feature.'|element:'.$this->element;
+		$query = 'feature:'.$this->feature.'|element:'.$this->element;
 		foreach ($this->stylers as $key => $value) {
 			$value = $this->convert_hex_to_hexadecimal($value);
 			$query .= '|'.$key.':'.$value;
 		}
 
-		return $query;
+		return 'style='.urlencode($query);
 	}
 
 	private function convert_hex_to_hexadecimal($hex) {

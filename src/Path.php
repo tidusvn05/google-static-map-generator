@@ -68,7 +68,7 @@ class Path {
 		} elseif ($this->pathString) {
 			$encoded_str = $this->pathString;
 		}
-		$query = 'path=fillcolor:'.$this->fill_color.'|color:'.$this->border_color.'|enc:'.$encoded_str;
+		$query = 'path='.urlencode('fillcolor:'.$this->fill_color.'|color:'.$this->border_color.'|enc:'.$encoded_str);
 		return $query;
 	}
 
