@@ -80,59 +80,36 @@ class Marker{
 	}
 
 	public function build_encoded_query() {
-		$params = [];
-		$query = '';
+		$queries = [];
 
 		if (($color = $this->getColor()) !== null) {
-			$params['color'] = $color;
+			$queries[] = 'color:'.$color;
 		}
 
 		if (($size = $this->getSize()) !== null) {
-			$params['size'] = $size;
+			$queries[] = 'size:'.$size;
 		}
 
 		if (($label = $this->getLabel()) !== null) {
-			$params['label'] = $label;
+			$queries[] = 'label:'.$label;
 		}
 
 		if (($icon = $this->getIcon()) !== null) {
-			$params['icon'] = $icon;
+			$queries[] = 'icon:'.$icon;
 		}
 
 		if (($anchor = $this->getAnchor()) !== null) {
-			$params['anchor'] = $anchor;
-		}
-
-		if (($anchor = $this->getAnchor()) !== null) {
-			$params['anchor'] = $anchor;
-		}
-
-		//build query
-		$i = 0;
-		foreach ($params as $k => $val) {
-			$q = "$k:$val";
-			$separator = "|";
-			if ($i === 0) {
-				$separator = "";
-			}
-
-			$query .= $separator.$q;
-			$i++;
+			$queries[] = 'anchor:'.$anchor;
 		}
 
 		//build locations's query
 		if (count($this->getLocations()) > 0) {
 			foreach ($this->getLocations() as $k => $location) {
-				$q = $location->getLat().",".$location->getLng();
-				$separator = "|";
-				if ($query === "") {
-					$separator = "";
-				}
-				$query .= $separator.$q;
+				$queries[] = $location->getLat().','.$location->getLng();
 			}
 		}
 
-		return 'markers='.urlencode($query);
+		return 'markers='.urlencode(implode('|', $queries));
 	}
 
 }
