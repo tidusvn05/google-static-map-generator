@@ -15,7 +15,8 @@
         "source" : "https://github.com/tidusvn05/google-static-map-generator"
     },
     "require": {
-        "php": ">=5.4",
+        "php": ">=5.6",
+        "ext-json": "*",
         "emcconville/polyline-encoder" : "1.*"
     },
     "require-dev": {

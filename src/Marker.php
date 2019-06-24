@@ -11,19 +11,18 @@ namespace Tidusvn05\StaticMap;
 class Marker{
 	const SIZE = ['tiny', 'mid', 'small'];
 
-  private $size; // default normal size: mid
-  private $color; // 24 bit color: 0xff0011
-  private $label;
-  private $anchor;
-  private $icon;
+	private $size; // default normal size: mid
+	private $color; // 24 bit color: 0xff0011
+	private $label;
+	private $anchor;
+	private $icon;
 	private $locations = [];
-  
-  
-  public function setLocations($locations){
+
+	public function setLocations($locations) {
 		$this->locations = $locations;
 
 		return $this;
-  }
+	}
 
 	public function getLocations(){
 		return $this->locations;
@@ -80,6 +79,37 @@ class Marker{
 		return $this;
 	}
 
+	public function build_encoded_query() {
+		$queries = [];
 
+		if (($color = $this->getColor()) !== null) {
+			$queries[] = 'color:'.$color;
+		}
+
+		if (($size = $this->getSize()) !== null) {
+			$queries[] = 'size:'.$size;
+		}
+
+		if (($label = $this->getLabel()) !== null) {
+			$queries[] = 'label:'.$label;
+		}
+
+		if (($icon = $this->getIcon()) !== null) {
+			$queries[] = 'icon:'.$icon;
+		}
+
+		if (($anchor = $this->getAnchor()) !== null) {
+			$queries[] = 'anchor:'.$anchor;
+		}
+
+		//build locations's query
+		if (count($this->getLocations()) > 0) {
+			foreach ($this->getLocations() as $k => $location) {
+				$queries[] = $location->getLat().','.$location->getLng();
+			}
+		}
+
+		return 'markers='.urlencode(implode('|', $queries));
+	}
 
 }
