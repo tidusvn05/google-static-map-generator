@@ -57,7 +57,7 @@ class URLGenerator implements GeneratorInterface{
 
     //maptype
     if (($maptype = $this->map->getMaptype()) !== null) {
-      $this->parameters['maptype'] = $this->maptype;
+      $this->parameters['maptype'] = $maptype;
     }
 
     //maptype
